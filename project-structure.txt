@@ -1,0 +1,77 @@
+leetcode-hint-extension/
+├── manifest.json                 # Extension manifest (v3)
+├── package.json                  # Dependencies and scripts
+├── tsconfig.json                # TypeScript configuration
+├── webpack.config.js            # Build configuration
+├── .env.example                 # Environment variables template
+├── .gitignore                   # Git ignore file
+├── README.md                    # Project documentation
+│
+├── src/
+│   ├── background/              # Background script
+│   │   └── background.ts        # API calls and message handling
+│   │
+│   ├── content/                 # Content scripts
+│   │   ├── content.ts           # Main content script
+│   │   ├── leetcode-detector.ts # LeetCode page detection
+│   │   ├── code-extractor.ts    # Extract user's code from editor
+│   │   ├── problem-extractor.ts # Extract problem details
+│   │   └── ui-manager.ts        # Non-blocking UI placement
+│   │
+│   ├── popup/                   # Popup interface (non-blocking)
+│   │   ├── popup.html           # Main popup UI
+│   │   ├── popup.ts             # Popup logic and event handlers
+│   │   └── popup.css            # Responsive, non-intrusive styling
+│   │
+│   ├── components/              # Reusable UI components
+│   │   ├── hint-panel.ts        # Hint display component
+│   │   ├── code-analysis.ts     # Code analysis display
+│   │   ├── context-panel.ts     # Problem clarification display
+│   │   └── floating-widget.ts   # Alternative non-blocking UI
+│   │
+│   ├── services/                # API and utility services
+│   │   ├── gemini-api.ts        # Gemini API integration
+│   │   ├── storage.ts           # Chrome storage wrapper
+│   │   ├── problem-parser.ts    # LeetCode problem parsing
+│   │   ├── code-analyzer.ts     # Code analysis logic
+│   │   └── context-clarifier.ts # Problem context simplification
+│   │
+│   ├── types/                   # TypeScript type definitions
+│   │   ├── leetcode.ts          # LeetCode page structure
+│   │   ├── gemini.ts            # API request/response types
+│   │   ├── extension.ts         # Extension-specific types
+│   │   └── features.ts          # Feature-specific types
+│   │
+│   └── utils/                   # Shared utilities
+│       ├── constants.ts         # App constants
+│       ├── helpers.ts           # Utility functions
+│       ├── prompt-templates.ts  # Gemini prompt strategies
+│       └── ui-positioning.ts    # Non-blocking UI placement logic
+│
+├── dist/                        # Built extension files (generated)
+├── icons/                       # Extension icons
+│   ├── icon16.png
+│   ├── icon48.png
+│   └── icon128.png
+│
+└── docs/                        # Additional documentation
+    ├── setup.md                 # Setup and installation guide
+    ├── api-integration.md       # Gemini API setup
+    ├── feature-specs.md         # Detailed feature specifications
+    └── ui-design.md             # UI placement and design guidelines
+
+# Feature Flow Architecture:
+
+## 1. Hint System (On-Demand API Calls)
+Content Script → Extract Problem → User Clicks Hint → Background → Gemini API → Cache → Display
+
+## 2. Code Analysis ("What am I doing wrong?")
+Content Script → Extract Code + Problem → User Clicks Analyze → Background → Gemini API → Analysis → Display
+
+## 3. Context Clarification 
+Content Script → Extract Problem Statement → User Clicks Clarify → Background → Gemini API → Simplified → Display
+
+## 4. UI Placement Strategy
+- Primary: Extension popup (positioned to avoid LeetCode UI)
+- Fallback: Floating widget (draggable, collapsible)
+- All UI elements designed to be non-intrusive and responsive
